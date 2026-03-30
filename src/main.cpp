@@ -8,7 +8,7 @@ void compile_to_binary(const std::string &file, const std::string &format) {
   int32_t h {};
   int32_t c {};
 
-  int32_t channel {4};
+  int32_t channel {1};
 
   std::string input_path {"./imgs/" + file + format};
 
