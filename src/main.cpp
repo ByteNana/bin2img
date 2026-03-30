@@ -2,15 +2,6 @@
 #include "stb/stb_image.h"
 #include <iostream>
 #include <cstdint>
-#include <vector>
-
-static uint16_t rgba_to_argb1555(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-  return
-    ((a > 127 ? 1 : 0) << 15) |
-    ((r & 0xF8) << 7) |
-    ((g & 0xF8) << 2) |
-    ((b & 0xF8) >> 3);
-}
 
 void compile_to_binary(const std::string &file, const std::string &format) {
   int32_t w {};
@@ -47,31 +38,20 @@ void compile_to_binary(const std::string &file, const std::string &format) {
     return;
   }
 
-  std::vector<uint16_t> out{};
-  out.resize(static_cast<size_t>(w) * h);
+  size_t size {static_cast<size_t>(w * h * channel)};
 
-  for (int32_t i = 0; i < w * h; i++) {
-    uint8_t r = p_raw[i * 4 + 0];
-    uint8_t g = p_raw[i * 4 + 1];
-    uint8_t b = p_raw[i * 4 + 2];
-    uint8_t a = p_raw[i * 4 + 3];
-
-    out[i] = rgba_to_argb1555(r, g, b, a);
-  }
-
-  uint16_t w16 = static_cast<uint16_t>(w);
-  uint16_t h16 = static_cast<uint16_t>(h);
-  uint8_t c8 = 2;
+  uint16_t w16 {static_cast<uint16_t>(w)};
+  uint16_t h16 {static_cast<uint16_t>(h)};
+  uint8_t c8 {static_cast<uint8_t>(channel)};
 
   fwrite(&w16, sizeof(w16), 1, pf);
   fwrite(&h16, sizeof(h16), 1, pf);
   fwrite(&c8, sizeof(c8), 1, pf);
 
-  size_t size_bytes = static_cast<size_t>(w) * h * 2;
-  size_t written = fwrite(out.data(), 1, size_bytes, pf);
+  size_t written {fwrite(p_raw, 1, size, pf)};
 
-  if (written != size_bytes) {
-    std::cout << "-+-+ error = write size mismatch!" << std::endl;
+  if (written != size) {
+    std::cout << "-+-+ error = write size and size does not match!" << std::endl;
   }
 
   fclose(pf);
