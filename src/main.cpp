@@ -61,7 +61,21 @@ void compile_to_binary(const std::string &file, const std::string &format) {
 int32_t main(int32_t, char**) {
   std::cout << "-- Compiling imgs to binary flash..." << std::endl;
 
-  compile_to_binary("atlas", ".png");
+  compile_to_binary("bikefast", ".png");
+  compile_to_binary("bikeslow", ".png");
+  compile_to_binary("gps", ".png");
+  compile_to_binary("hand", ".png");
+  compile_to_binary("line", ".png");
+  compile_to_binary("memoryrange", ".png");
+  compile_to_binary("mobile", ".png");
+  compile_to_binary("speed", ".png");
+  compile_to_binary("sync", ".png");
+  compile_to_binary("settingsgray", ".png");
+  compile_to_binary("settingsgreen", ".png");
+  compile_to_binary("statsgray", ".png");
+  compile_to_binary("statsgreen", ".png");
+  compile_to_binary("trackgray", ".png");
+  compile_to_binary("trackgreen", ".png");
 
   return 0;
 }
